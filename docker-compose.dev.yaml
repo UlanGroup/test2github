@@ -1,0 +1,38 @@
+version: "3"
+
+services:
+    nginx:
+        ports:
+            - "80:80"
+            - "443:443"
+        networks:
+            - fund_net
+
+    php:
+        environment:
+            XDEBUG_CONFIG: "remote_host=192.168.111.1 remote_enable=1"
+            PHP_IDE_CONFIG: "serverName=Docker"
+        volumes:
+            - ./.build/docker/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+        networks:
+            - fund_net
+
+    mysql:
+        ports:
+            - "3306:3306"
+        networks:
+            - fund_net
+
+    redis:
+        ports:
+            - "6379:6379"
+        networks:
+            - fund_net
+
+networks:
+    fund_net:
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: 192.168.111.0/28

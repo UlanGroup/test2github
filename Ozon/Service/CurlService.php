@@ -1,0 +1,178 @@
+<?php
+
+namespace app\Ozon\Service;
+
+
+class CurlService
+{
+
+    public static function getProducts()
+    {
+        $headers = [
+            "Host: api-seller.ozon.ru",
+            "Client-Id: 2019",
+            "Api-Key: 059bca6b-d650-441c-98f1-cff84b70fcde",
+            "Content-Type: application/json",
+        ];
+
+        $payload = [
+            "last_id" => '',
+            'limit' => 1000
+        ];
+
+        $ch = curl_init('https://api-seller.ozon.ru/v2/product/list');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload, JSON_UNESCAPED_UNICODE));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_HEADER, false);
+        $result = curl_exec($ch);
+        curl_close($ch);
+
+        return json_decode($result, true);
+    }
+
+
+    public static function getProduct(int $id)
+    {
+        $headers = [
+            "Host: api-seller.ozon.ru",
+            "Client-Id: 2019",
+            "Api-Key: 059bca6b-d650-441c-98f1-cff84b70fcde",
+            "Content-Type: application/json",
+        ];
+
+        $payload = [
+            "product_id" => $id,
+            "sku" => 0
+        ];
+
+        $ch = curl_init('https://api-seller.ozon.ru/v2/product/info');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload, JSON_UNESCAPED_UNICODE));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_HEADER, false);
+        $result = curl_exec($ch);
+        curl_close($ch);
+
+        return json_decode($result, true);
+    }
+
+
+    // Получить данные из ozon
+    public static function getOrders($date_to = false)
+    {
+        if (empty($date_to)) {
+            $date_to = date('Y-m-d\TH:i:s.000\Z');
+        } else {
+            $date_to = date('Y-m-d\TH:i:s.000\Z', strtotime($date_to));
+        }
+
+        $headers = [
+            "Host: api-seller.ozon.ru",
+            "Client-Id: 2019",
+            "Api-Key: 059bca6b-d650-441c-98f1-cff84b70fcde",
+            "Content-Type: application/json",
+        ];
+
+        $payload = [
+            "dir" => "desc",
+            "filter" => [
+                "since" => "2023-01-01T00:00:00.000Z",
+                "status" => "",
+                "to" => $date_to,
+            ],
+            "limit" => 1000,
+            "offset" => 0,
+            "translit" => True,
+            "with" => [
+                "analytics_data" => True,
+                "financial_data" => True
+            ]
+        ];
+
+
+        $ch = curl_init('https://api-seller.ozon.ru/v2/posting/fbo/list');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload, JSON_UNESCAPED_UNICODE));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_HEADER, false);
+        $result = curl_exec($ch);
+        curl_close($ch);
+
+        return json_decode($result, true);
+    }
+
+
+    // Получить остатки из ozon
+    public static function getStock()
+    {
+        $headers = [
+            "Host: api-seller.ozon.ru",
+            "Client-Id: 2019",
+            "Api-Key: 059bca6b-d650-441c-98f1-cff84b70fcde",
+            "Content-Type: application/json",
+        ];
+
+        $payload = [
+            "limit" => 1000,
+        ];
+
+
+        $ch = curl_init('https://api-seller.ozon.ru/v2/analytics/stock_on_warehouses');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload, JSON_UNESCAPED_UNICODE));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_HEADER, false);
+        $result = curl_exec($ch);
+        curl_close($ch);
+
+        return json_decode($result, true);
+    }
+
+
+    public static function getFunnel()
+    {
+        $headers = [
+            "Host: api-seller.ozon.ru",
+            "Client-Id: 2019",
+            "Api-Key: 059bca6b-d650-441c-98f1-cff84b70fcde",
+            "Content-Type: application/json",
+        ];
+
+        $payload = [
+            "date_from" => "2024-01-01",
+            "date_to" => "2024-02-29",
+            "dimension" => ["day"],
+            "metrics" => [
+                "session_view",
+                "session_view_pdp",
+                "hits_tocart",
+                "ordered_units"
+            ],
+            "offset" => 0,
+            "limit" =>  1000
+        ];
+
+        $ch = curl_init('https://api-seller.ozon.ru/v1/analytics/data');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload, JSON_UNESCAPED_UNICODE));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_HEADER, false);
+        $result = curl_exec($ch);
+        curl_close($ch);
+
+        return json_decode($result, true);
+    }
+
+
+}
