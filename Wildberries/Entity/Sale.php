@@ -2,8 +2,6 @@
 
 namespace app\Wildberries\Entity;
 
-use Yii;
-
 /**
  * This is the model class for table "wb_sale".
  *
@@ -42,7 +40,7 @@ class Sale extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'wb_sale';
     }
@@ -50,13 +48,15 @@ class Sale extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['date', 'lastChangeDate'], 'safe'],
             [['nmId', 'incomeID', 'isSupply', 'isRealization', 'discountPercent', 'spp', 'sticker', 'gNumber', 'status'], 'integer'],
             [['totalPrice', 'forPay', 'finishedPrice', 'priceWithDisc'], 'number'],
-            [['warehouseName', 'countryName', 'oblastOkrugName', 'regionName', 'supplierArticle', 'barcode', 'category', 'subject', 'brand', 'techSize', 'orderType', 'srid', 'saleID'], 'string', 'max' => 255],
+            [['warehouseName', 'countryName', 'oblastOkrugName', 'regionName',
+                'supplierArticle', 'barcode', 'category', 'subject', 'brand',
+                'techSize', 'orderType', 'srid', 'saleID'], 'string', 'max' => 255],
         ];
     }
 }

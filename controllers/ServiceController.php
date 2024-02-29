@@ -81,6 +81,7 @@ class ServiceController extends Controller
         $result = OzonApiService::getOrders();
         if (empty($result)) return null;
 
+        return $result;
         $orderF = new OrderFactory();
         foreach ($result['result'] as $item) {
             $orderDTO = OrderDTO::ozon($item);

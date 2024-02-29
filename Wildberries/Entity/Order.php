@@ -2,7 +2,7 @@
 
 namespace app\Wildberries\Entity;
 
-use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "wb_order".
@@ -37,12 +37,12 @@ use Yii;
  * @property string|null $srid
  * @property int|null $status
  */
-class Order extends \yii\db\ActiveRecord
+class Order extends ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'wb_order';
     }
@@ -50,7 +50,7 @@ class Order extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['date', 'lastChangeDate'], 'safe'],

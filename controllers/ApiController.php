@@ -3,7 +3,6 @@
 namespace app\controllers;
 
 use app\Ozon\Entity\Order;
-use Yii;
 
 use app\Ozon\Entity\Category;
 
@@ -12,7 +11,6 @@ use app\Ozon\Repository\OrderRepository;
 use app\Ozon\Repository\ProductRepository;
 use app\Ozon\Repository\RegionRepository;
 
-use agielks\yii2\jwt\JwtBearerAuth;
 use yii\filters\Cors;
 use yii\web\Controller;
 
@@ -55,8 +53,6 @@ class ApiController extends Controller
         return ['dashboard' => $dashboard, 'categories' => $categories, 'stocks' => $stocks, 'orders' => $orders, 'alert' => ['msg' => 'Обновили за ' . round($t1 - $t0) . ' ms', 'type' => 'success']];
     }
 
-
-//    // Стор
 //    public function actionStore()
 //    {
 //        $get = Yii::$app->getRequest()->get();
@@ -80,7 +76,7 @@ class ApiController extends Controller
 
 
     // кластеры
-    public function actionClusters()
+    public function actionClusters(): array
     {
         $clusterR = new RegionRepository();
         $clusters = $clusterR->all(true);
